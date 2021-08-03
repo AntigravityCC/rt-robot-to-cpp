@@ -1,3 +1,4 @@
+
 TARGET = exe
 
 CC = gcc
@@ -9,30 +10,26 @@ CXXSRCS = $(foreach n,$(AllDIRS) , $(wildcard $(n)/*.cpp))
 
 OBJS := $(CSRCS:.c=.o) $(CXXSRCS:.cpp=.o)
 
-DEBUG_FLAG  =
-#DEBUG_FLAG := -g
+DEBUG_FLAG = -g
 
-SRC_PATH = .
-INC_PATH = -I $(SRC_PATH) \
-				#-I $(SRC_PATH)/ZHIYUN_imageShow\
-				#-I $(SRC_PATH)/ZHIYUN_piano\
-				#-I $(SRC_PATH)/ZHIYUN_imageShow/include
+INC_PATH = -I ./\
+            -I ./build\
+			-I ./src\
+			-I ./inc
 
-#LIB_PATH = -lpthread -lm -lopencv_highgui -lopencv_imgproc -lopencv_imgcodecs -lopencv_core -L/usr/lib/x86_64-linux-gnu -Wl,-rpath,/usr/lib/x86_64-linux-gnu
 LIB_PATH = -lpthread
 
 $(TARGET) : $(OBJS)
-	$(CXX) $(DEBUG_FLAG) $^ -o $@ $(INC_PATH) $(LIB_PATH);
+	$(CC) $(DEBUG_FLAG) $^ -o $@  $(LIB_PATH) ;
 	@echo "> build success <"
 
+%.o : %.c
+	$(CC) $(DEBUG_FLAG) $< -c -o $@ $(INC_PATH) 
 
 %.o : %.cpp
-	$(CXX) $(DEBUG_FLAG) $< -c -o $@ $(INC_PATH) $(LIB_PATH);
-
-%.o : %.c
-	$(CC) $(DEBUG_FLAG) $< -c -o  $@ $(INC_PATH) $(LIB_PATH);
+	$(CXX) $(DEBUG_FLAG) $< -c -o $@ $(INC_PATH) 
 
 .PHONY:clean
-
 clean:
 	rm -f $(OBJS) $(TARGET)
+
